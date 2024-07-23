@@ -12,7 +12,7 @@ var (
 	filePath = "books.json"
 )
 
-func readBooks() ([]Book, error) {
+func ReadBooks() ([]Book, error) {
 	file, err := os.ReadFile(filePath)
 	if err != nil {
 		return nil, err
@@ -32,11 +32,11 @@ func writeBooks(books []Book) error {
 	return os.WriteFile(filePath, data, 0644)
 }
 
-func AddBookToDB(bookID, status string) {
+func AddBookToDB(bookID, status, authorName string) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
-	books, err := readBooks()
+	books, err := ReadBooks()
 	if err != nil {
 		fmt.Println("Error reading books:", err)
 		return
@@ -45,6 +45,7 @@ func AddBookToDB(bookID, status string) {
 	book := Book{
 		ID:     bookID,
 		Status: status,
+		Author: authorName,
 	}
 	books = append(books, book)
 

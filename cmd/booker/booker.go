@@ -1,7 +1,9 @@
 package main
 
 import (
-	cmd "booker/cmd/search"
+	"booker/cmd/list"
+	"booker/cmd/search"
+	"log"
 
 	"github.com/spf13/cobra"
 )
@@ -12,5 +14,11 @@ var rootCmd = &cobra.Command{
 }
 
 func main() {
-	cmd.Execute()
+	rootCmd.AddCommand(search.SearchCmd)
+	rootCmd.AddCommand(list.ListCmd)
+
+	// execute the root command
+	if err := rootCmd.Execute(); err != nil {
+		log.Fatal("Error executing command:", err)
+	}
 }

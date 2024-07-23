@@ -1,4 +1,4 @@
-package cmd
+package search
 
 import (
 	"booker/db"
@@ -91,6 +91,14 @@ func searchBooks(query string) {
 		return
 	}
 
+	var selectedBookAuthor string
+	for _, doc := range result.Docs {
+		if doc.Key == selectId {
+			selectedBookAuthor = doc.Author[0]
+			break
+		}
+	}
+
 	status := utils.PromptForStatus()
-	db.AddBookToDB(selectId, status)
+	db.AddBookToDB(selectId, status, selectedBookAuthor)
 }
