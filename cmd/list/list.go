@@ -2,11 +2,10 @@ package list
 
 import (
 	"booker/db"
-	"encoding/json"
 	"fmt"
-	"net/http"
 	"os"
 
+	"github.com/alexeyco/simpletable"
 	"github.com/spf13/cobra"
 )
 
@@ -34,22 +33,40 @@ func listBooks() {
 		return
 	}
 
-	for _, book := range books {
-		url := fmt.Sprintf("https://openlibrary.org%s.json", book.ID)
-		response, err := http.Get(url)
-		if err != nil {
-			fmt.Println("Error fetching book details:", err)
-			continue
-		}
-		defer response.Body.Close()
-
-		var details BookDetails
-		if err := json.NewDecoder(response.Body).Decode(&details); err != nil {
-			fmt.Println("Error decoding book details:", err)
-			continue
-		}
-
-		fmt.Printf("Title: %s\nAuthor: %s\nStatus: %s\n",
-			details.Title, book.Author, book.Status)
+	table := simpletable.New()
+	table.Header = &simpletable.Header{
+		Cells: []*simpletable.Cell{
+			{Align: simpletable.AlignCenter, Text: "Title"},
+			{Align: simpletable.AlignCenter, Text: "Author"},
+			{Align: simpletable.AlignRight, Text: "Status"},
+		},
 	}
+
+	var cells [][]*simpletable.Cell
+	for _, book := range books {
+		status := lime(book.Status)
+		if book.Status == "reading" {
+			status = lavender(book.Status)
+		} else if book.Status == "read" {
+			status = purple(book.Status)
+		}
+
+		cells = append(cells, []*simpletable.Cell{
+			{Text: book.Title},
+			{Text: book.Author},
+			{Text: status, Align: simpletable.AlignRight},
+		})
+	}
+
+	table.Body = &simpletable.Body{
+		Cells: cells,
+	}
+
+	table.Footer = &simpletable.Footer{
+		Cells: []*simpletable.Cell{
+			{Align: simpletable.AlignCenter, Span: 3, Text: "That's your bookshelf"},
+		},
+	}
+	table.SetStyle(simpletable.StyleUnicode)
+	table.Println()
 }

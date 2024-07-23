@@ -2,6 +2,19 @@
   {
     "id": "/works/OL41081W",
     "status": "reading",
-    "author": "Edgar Allan Poe"
+    "author": "Edgar Allan Poe",
+    "title": "The Raven"
+  },
+  {
+    "id": "/works/OL21809822W",
+    "status": "read",
+    "author": "Фёдор Михайлович Достоевский",
+    "title": "Crime and Punishment"
+  },
+  {
+    "id": "/works/OL468431W",
+    "status": "to be read",
+    "author": "F. Scott Fitzgerald",
+    "title": "The Great Gatsby"
   }
 ]

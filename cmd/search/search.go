@@ -91,14 +91,15 @@ func searchBooks(query string) {
 		return
 	}
 
-	var selectedBookAuthor string
+	var selectedBookAuthor, selectedTitle string
 	for _, doc := range result.Docs {
 		if doc.Key == selectId {
+			selectedTitle = doc.Title
 			selectedBookAuthor = doc.Author[0]
 			break
 		}
 	}
 
 	status := utils.PromptForStatus()
-	db.AddBookToDB(selectId, status, selectedBookAuthor)
+	db.AddBookToDB(selectId, status, selectedBookAuthor, selectedTitle)
 }

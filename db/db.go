@@ -32,7 +32,7 @@ func writeBooks(books []Book) error {
 	return os.WriteFile(filePath, data, 0644)
 }
 
-func AddBookToDB(bookID, status, authorName string) {
+func AddBookToDB(bookID, status, authorName, title string) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
@@ -46,6 +46,7 @@ func AddBookToDB(bookID, status, authorName string) {
 		ID:     bookID,
 		Status: status,
 		Author: authorName,
+		Title:  title,
 	}
 	books = append(books, book)
 
